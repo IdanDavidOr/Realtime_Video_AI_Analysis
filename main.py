@@ -1,5 +1,4 @@
 import argparse
-import numpy as np
 import cv2
 import torch
 import json
@@ -7,14 +6,15 @@ import threading
 import time
 
 # Check for CUDA availability
-# device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 # Load YOLOv5 model
-model = torch.hub.load('ultralytics/yolov5', 'yolov5s', pretrained=True) #.to(device)
+model = torch.hub.load('ultralytics/yolov5', 'yolov5s', pretrained=True).to(device)
 
 # Global variables to store inference results and metadata
 inference_results = None
 metadata = None
+
 
 def convert_to_yolo_format(results, width, height):
     # Extract information from the YOLOv5 tensor output and structure into desired format
@@ -39,6 +39,7 @@ def convert_to_yolo_format(results, width, height):
         })
     return yolo_results
 
+
 def save_to_json(output_file):
     global inference_results, metadata
 
@@ -57,20 +58,14 @@ def save_to_json(output_file):
 
         time.sleep(1)  # Adjust sleep time as needed
 
+
 def process_frame(frame):
-    # Resize the frame to match YOLOv5 model input size
-    input_size = (640, 640)  # YOLOv5 model input size
+    # Resize the frame
+    input_size = (640, 640)
     frame_resized = cv2.resize(frame, input_size)
 
-
-    # Convert frame to correct shape - only for cuda
-    # frame_resized = frame_resized.transpose(2, 0, 1)  # Change channel order (HWC to CHW)
-    # frame_resized = frame_resized[np.newaxis, ...]
-
-    # frame_resized = torch.from_numpy(frame_resized)
-
-
     return frame_resized
+
 
 def stream_rtsp(rtsp_url):
     global inference_results, metadata
@@ -84,8 +79,8 @@ def stream_rtsp(rtsp_url):
             break
 
         frame_resized = process_frame(frame)
-        # Move the frame to the device
-        frame_device = frame_resized #.to(device)
+        # Move the frame to the device - this is where i had some issues
+        frame_device = frame_resized  # .to(device)
 
         results = model(frame_device)
 
@@ -106,10 +101,12 @@ def stream_rtsp(rtsp_url):
     cap.release()
     cv2.destroyAllWindows()
 
+
 def main():
     parser = argparse.ArgumentParser(description="Real-Time Video Analysis Pipeline")
     parser.add_argument("rtsp_url", type=str, help="RTSP URL for video stream")
-    parser.add_argument("--output_file", type=str, default="yolo_results.json", help="Output JSON file for YOLO relative format results")
+    parser.add_argument("--output_file", type=str, default="yolo_results.json",
+                        help="Output JSON file for YOLO relative format results")
     args = parser.parse_args()
 
     # Create a thread for writing to JSON
