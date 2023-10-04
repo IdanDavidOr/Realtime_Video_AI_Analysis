@@ -46,7 +46,6 @@ The json saving scheme uses global variables for inter-function communication
 The frame is resized so that the input size is constant.
 
 
-
 ---
 ## Q&A
 
