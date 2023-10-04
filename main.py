@@ -92,7 +92,7 @@ def stream_rtsp(rtsp_url):
         inference_results = yolo_results
         metadata = {"timestamp": time.time()}  # Example metadata, you can modify this based on your requirements
 
-        cv2.imshow('RTSP Stream', results.render()[0])
+        cv2.imshow('RTSP Stream - press `q` to stop stream', results.render()[0])
 
         # Press 'q' to exit the loop and stop streaming
         if cv2.waitKey(1) & 0xFF == ord('q'):
