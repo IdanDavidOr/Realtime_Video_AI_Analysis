@@ -7,7 +7,7 @@ import threading
 import time
 
 # Check for CUDA availability
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+# device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 # Load YOLOv5 model
 model = torch.hub.load('ultralytics/yolov5', 'yolov5s', pretrained=True) #.to(device)
@@ -105,7 +105,6 @@ def stream_rtsp(rtsp_url):
 
     cap.release()
     cv2.destroyAllWindows()
-    return results
 
 def main():
     parser = argparse.ArgumentParser(description="Real-Time Video Analysis Pipeline")
