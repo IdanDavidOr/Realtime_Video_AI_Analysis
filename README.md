@@ -14,6 +14,8 @@ you can change `myenv` to any name you'd like
 
 To install the required modules run `conda install -c conda-forge --file requirements.txt`
 
+## Download YOLOV8
+
 
 
 
