@@ -1,5 +1,5 @@
-# Real-Time Video Analysis Pipeline – Captain's Eye
-## Submission by: Idan Lavi
+# Real-Time Video Analysis 'ןאי YOLO
+## Submission by: Idan David Or Lavi
 
 ---
 
