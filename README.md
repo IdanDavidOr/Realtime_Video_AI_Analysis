@@ -1,4 +1,4 @@
-# Real-Time Video Analysis 'ןאי YOLO
+# Real-Time Video Analysis with YOLO
 ## Submission by: Idan David Or Lavi
 
 ---
